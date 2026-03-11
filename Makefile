@@ -10,6 +10,9 @@ setup_virtualenv:
 
 setup_passwords:
 	@echo "#This file contains the login information after setup" > settings.py
+	@echo "----------------------------------"
+	@echo "------Start of password setup-----"
+	@echo "----------------------------------"
 	@echo "Please enter username and password for the eccad website"; \
 	read -p "Username: " username; \
 	read -p "Password: " password; \
@@ -19,10 +22,11 @@ setup_passwords:
 	chmod 700 settings.py
    
 clean:
-	rm -rf downloads/*
-	rm -rf input_test/*
+	rm -rf downloads
+	rm -rf input_test
 
 cleanall:
 	rm -rf .venv/ADCHEM
 	rm -rf input_test
 	rm -rf downloads
+	rm settings.py
