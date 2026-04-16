@@ -5,8 +5,9 @@
 #
 ########################## Imports ###########################
 import os
+import numpy as np
 import CAMS_API
-
+import meteorology_download
 ##############################################################
 
 
@@ -15,7 +16,7 @@ import CAMS_API
 input_data_location = "/home/engsvang/programs/ADCHEM_PP_dataset_api_interface/input_test"
 #Set the time range for the modelling, restricted to months at the finest resolution.
 years = [2019] #List of years to download for
-month_range = [1,12] #List of months to include, if in doubt include all months.
+month_array = np.arange(1,2) #List of months to include (if december is to be included write 13 instead of 12), if in doubt include all months (1,13)
 #Set the spatial range for the modelling, latitude and longitude in degrees.
 #Avoid downloading for the entire world if possible. I recommend either northern or southern hemisphere.
 latitudes = [0,90] #Negative: southern hemisphere, positive: northern hemisphere
@@ -24,6 +25,11 @@ longitudes = [-180,180] #Negative: western hemisphere, positive: eastern hemisph
 
 
 ########################## Folder creation ##########################
+if not os.path.exists(input_data_location+"/meteorology"):
+    os.makedirs(input_data_location+"/meteorology")
+else:
+    print("Meteorology folder already exists, skipping creation.")
+
 folders = ["CAMS","CAMS_conc_fields","CMS_ocean_products","Country_index","ERA5","GAINS_ECLIPSEv5_PN","GFED4_fire_emissions","GLOBALCover","HTAPv3"]
 for folder in folders:
     if not os.path.exists(input_data_location+"/"+folder):
@@ -35,7 +41,7 @@ for folder in folders:
 ########################## Preprocessing ############################
 ranges = {
     "years": years,
-    "months": month_range,
+    "months": month_array,
     "latitudes": latitudes,
     "longitudes": longitudes
 }
@@ -44,7 +50,9 @@ ranges = {
 
 ########################## Call subscripts ##########################
 #Calling subscripts for the API calls, in addition they check if the data is already present
+meteorology_download.meteorology_download(input_data_location+"/meteorology", years, month_array)
+
 #CAMS do not have a true API, you have to manually request datasets to get the links.
-CAMS_API.CAMS_download(input_data_location+"/CAMS",years,latitudes,longitudes)
+#CAMS_API.CAMS_download(input_data_location+"/CAMS",years,latitudes,longitudes)
 
 #####################################################################
