@@ -1,0 +1,6 @@
+settings.py
+.venv
+tokens.json
+__pycache__
+test_venv
+settings_static.py

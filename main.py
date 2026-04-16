@@ -14,7 +14,7 @@ import CAMS_API
 #Location to put the input data, it will check if something is still there and if not download it.
 input_data_location = "/home/engsvang/programs/ADCHEM_PP_dataset_api_interface/input_test"
 #Set the time range for the modelling, restricted to months at the finest resolution.
-years = [2013] #List of years to download for
+years = [2019] #List of years to download for
 month_range = [1,12] #List of months to include, if in doubt include all months.
 #Set the spatial range for the modelling, latitude and longitude in degrees.
 #Avoid downloading for the entire world if possible. I recommend either northern or southern hemisphere.

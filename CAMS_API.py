@@ -72,7 +72,8 @@ def _token_response_handler(tokens: dict):
                 if "access_token" in data:
                     tokens.update(data)
                     tokens["obtained_at"] = time.time()
-                    print("  Tokens captured.")
+                    TOKEN_CACHE.write_text(json.dumps(tokens, indent=2))  # ← save to disk
+                    print("  Tokens captured and saved.")
             except Exception:
                 pass
     return handler
@@ -82,7 +83,7 @@ def get_tokens_via_browser() -> dict:
     tokens = {}
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
+        browser = p.chromium.launch(headless=True)
         page    = browser.new_page()
         page.on("response", _token_response_handler(tokens))
         _do_login(page, tokens)
@@ -153,9 +154,9 @@ def submit_request(session: requests.Session, ds: dict) -> None:
     """
     Submit a dataset request via a direct POST with the JSON payload.
 
-    The server returns 302 in two cases:
-      - New request created and being processed (success)
-      - Duplicate request detected — server deduplicates silently
+    The server returns success in two cases:
+      - Status 200: Successfull new request, wait for it to be created 
+      - 302 Duplicate request detected, and old links still valid. We therefore need to parse the response body of existing requests to find them.
 
     Both cases are fine: we detect the outcome by polling the links
     endpoint for a new entry rather than relying on the response body.
@@ -278,8 +279,18 @@ def extract(CAMS_DIR: Path, zip_path: Path) -> None:
 # Add one entry per download request you want to submit.
 # Each payload should match the JSON the site sends when you manually request.
 def make_dataset(years, latitudes, longitudes) -> list[dict]:
-    DATASETS = [{"payload": helper.make_yearly_payload_CAMS_GLOB_OCE(year, latitudes, longitudes)} for year in years]
-
+    #The ocean datasets, the 4.1 version only has CHBr3 and DMS at a lower resolution but more accurate
+    #The 3.1 version has all four species (CH2Br2, CH3I, CHBr3, DMS) but at a coarser resolution.
+    #And DMS especially is different (overestimated in the 3.1 version)
+    DATASETS = [{"payload": helper.make_yearly_payload_CAMS_GLOB_OCEv4_1(year, latitudes, longitudes)} for year in years]
+    DATASETS += [{"payload": helper.make_yearly_payload_CAMS_GLOB_OCEv3_1(year, latitudes, longitudes)} for year in years]
+    #Soil nox emission dataset of NOx, only available as monthly data
+    DATASETS += [{"payload": helper.make_yearly_payload_CAMS_GLOB_SOIL(year, latitudes, longitudes)} for year in years]
+    #Anthropogenic emissions dataset for a large collection of species, only available as monthly data
+    #Also weird because you can only input dates from the 15th to the 15th even though it's monthly. Thus it goes from Jan 15 to Dec 15 if you request a full year.
+    DATASETS += [{"payload": helper.make_yearly_payload_CAMS_GLOB_ANT(year, latitudes, longitudes)} for year in years]
+    #Biogenic emissions dataset for a large collection of species, only available as monthly data
+    DATASETS += [{"payload": helper.make_yearly_payload_CAMS_GLOB_BIO(year, latitudes, longitudes)} for year in years]
     return DATASETS
 
 # ── MAIN ──────────────────────────────────────────────────────────────────────
@@ -313,6 +324,9 @@ def CAMS_download(CAMS_DIR,years,latitudes,longitudes):
 
         # 4. Download every file in this request
         for dl in ready_files:
+            if is_token_expired(tokens):
+                tokens  = refresh_access_token(tokens)
+                session = make_session(tokens)
             filename = Path(dl["filenamePath"]).name  # e.g. CAMS-GLOB-OCE_...zip
             download_file(session, dl["link"], filename)
             extract(Path(CAMS_DIR),OUTPUT_DIR / filename)

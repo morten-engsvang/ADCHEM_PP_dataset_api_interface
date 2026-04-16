@@ -23,6 +23,9 @@ setup_passwords:
    
 clean:
 	rm -rf downloads
+
+clean_data:
+	rm -rf downloads
 	rm -rf input_test
 
 cleanall:
