@@ -8,6 +8,7 @@ import os
 import numpy as np
 import CAMS_API
 import meteorology_download
+import CLIMATE_DATA_STORE_API
 ##############################################################
 
 
@@ -26,6 +27,7 @@ longitudes = [-180,180] #Negative: western hemisphere, positive: eastern hemisph
 ####################### Test Settings ########################
 MET_DOWNLOAD = False
 CAMS_DOWNLOAD = False
+CLIMATE_DATA_STORE_DOWNLOAD = False
 
 ##############################################################
 
@@ -62,5 +64,8 @@ if MET_DOWNLOAD:
 #CAMS do not have a true API, you have to manually request datasets to get the links.
 if CAMS_DOWNLOAD:
     CAMS_API.CAMS_download(input_data_location+"/CAMS",years,latitudes,longitudes)
+
+if CLIMATE_DATA_STORE_DOWNLOAD:
+    CLIMATE_DATA_STORE_API.download_all(input_data_location,years,month_array,latitudes,longitudes)
 
 #####################################################################

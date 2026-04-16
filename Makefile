@@ -1,10 +1,11 @@
 run:
 	@.venv/ADCHEM/bin/python main.py
 
-setup: setup_virtualenv setup_passwords
+setup: setup_virtualenv setup_passwords setup_api
 
 setup_virtualenv:
 	python3 -m venv .venv/ADCHEM
+	.venv/ADCHEM/bin/python -m pip install --upgrade pip
 	.venv/ADCHEM/bin/python -m pip install -r requirements.txt
 	.venv/ADCHEM/bin/python -m playwright install
 
@@ -20,7 +21,16 @@ setup_passwords:
 	echo "ECCAD_USERNAME=\"$$username\"" >> settings.py; \
 	echo "ECCAD_PASSWORD=\"$$password\"" >> settings.py; \
 	chmod 700 settings.py
-   
+
+setup_api:
+	@echo "Creating API key for the Climate Data Store API in the HOME/.cdsapirc file"
+	@echo "Please enter the key which can be found on the website after login: https://cds.climate.copernicus.eu/how-to-api under 1. setup the CDS Api key"
+	read -p "url: " url; \
+	read -p "key: " key; \
+	echo "#Climate Data Store API key" > ~/settings.py; \
+	echo "url=\"$$url\"" >> ~/settings.py; \
+	echo "key=\"$$key\"" >> ~/settings.py
+
 clean:
 	rm -rf downloads
 
