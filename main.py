@@ -23,6 +23,11 @@ latitudes = [0,90] #Negative: southern hemisphere, positive: northern hemisphere
 longitudes = [-180,180] #Negative: western hemisphere, positive: eastern hemisphere
 ##############################################################
 
+####################### Test Settings ########################
+MET_DOWNLOAD = False
+CAMS_DOWNLOAD = False
+
+##############################################################
 
 ########################## Folder creation ##########################
 if not os.path.exists(input_data_location+"/meteorology"):
@@ -50,9 +55,12 @@ ranges = {
 
 ########################## Call subscripts ##########################
 #Calling subscripts for the API calls, in addition they check if the data is already present
-meteorology_download.meteorology_download(input_data_location+"/meteorology", years, month_array)
+#First get the meteorological data needed for preprocessing. It is likely that the user already had it when they ran the HYSPLIT trajectories
+if MET_DOWNLOAD:
+    meteorology_download.meteorology_download(input_data_location+"/meteorology", years, month_array)
 
 #CAMS do not have a true API, you have to manually request datasets to get the links.
-#CAMS_API.CAMS_download(input_data_location+"/CAMS",years,latitudes,longitudes)
+if CAMS_DOWNLOAD:
+    CAMS_API.CAMS_download(input_data_location+"/CAMS",years,latitudes,longitudes)
 
 #####################################################################
