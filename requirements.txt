@@ -3,3 +3,4 @@ requests
 pathlib
 playwright
 cdsapi
+copernicusmarine

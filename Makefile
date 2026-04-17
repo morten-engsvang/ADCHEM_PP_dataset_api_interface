@@ -4,7 +4,7 @@ run:
 setup: setup_virtualenv setup_passwords setup_api
 
 setup_virtualenv:
-	python3 -m venv .venv/ADCHEM
+	python3.9 -m venv .venv/ADCHEM
 	.venv/ADCHEM/bin/python -m pip install --upgrade pip
 	.venv/ADCHEM/bin/python -m pip install -r requirements.txt
 	.venv/ADCHEM/bin/python -m playwright install
