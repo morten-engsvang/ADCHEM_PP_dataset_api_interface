@@ -11,6 +11,7 @@ setup_virtualenv:
 
 setup_passwords:
 	@echo "#This file contains the login information after setup" > settings.py
+	@chmod 700 settings.py
 	@echo "----------------------------------"
 	@echo "------Start of password setup-----"
 	@echo "----------------------------------"
@@ -19,8 +20,7 @@ setup_passwords:
 	read -p "Password: " password; \
 	echo "#ECCAD login_information" >> settings.py; \
 	echo "ECCAD_USERNAME=\"$$username\"" >> settings.py; \
-	echo "ECCAD_PASSWORD=\"$$password\"" >> settings.py; \
-	chmod 700 settings.py
+	echo "ECCAD_PASSWORD=\"$$password\"" >> settings.py
 
 setup_api:
 	@echo "Creating API key for the Climate Data Store API"
