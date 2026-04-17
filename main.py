@@ -6,6 +6,7 @@
 ########################## Imports ###########################
 import os
 import numpy as np
+import ATMOSPHERE_DATA_STORE_API
 import CAMS_API
 import meteorology_download
 import CLIMATE_DATA_STORE_API
@@ -28,6 +29,7 @@ longitudes = [-180,180] #Negative: western hemisphere, positive: eastern hemisph
 MET_DOWNLOAD = False
 CAMS_DOWNLOAD = False
 CLIMATE_DATA_STORE_DOWNLOAD = False
+ATMOSPHERE_DATA_STORE_DOWNLOAD = True
 
 ##############################################################
 
@@ -67,5 +69,8 @@ if CAMS_DOWNLOAD:
 
 if CLIMATE_DATA_STORE_DOWNLOAD:
     CLIMATE_DATA_STORE_API.download_all(input_data_location,years,month_array,latitudes,longitudes)
+
+if ATMOSPHERE_DATA_STORE_DOWNLOAD:
+    ATMOSPHERE_DATA_STORE_API.download_all(input_data_location,years,month_array,latitudes,longitudes)
 
 #####################################################################
