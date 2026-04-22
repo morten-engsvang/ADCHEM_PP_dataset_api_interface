@@ -1,0 +1,8 @@
+Particle_sd_PN files are sourced from:
+https://iiasa.ac.at/models-tools-data/global-emission-fields-of-air-pollutants-and-ghgs
+specifically, from the ECLIPS V5 (Particle numbers) subsection, where I have just downloaded the 2010, 2020, and 2030 datasets.
+
+The NH3_seabird_emissions_new.xlsx is sourced from Riddick 2012: https://doi.org/10.1016/j.atmosenv.2012.02.052
+plus some extra stuff(?) that Pontus has collected.
+
+NOx_NT_2020_GRID_2018.txt has an unknown source (but was collected by Pontus), it is just used to give country indexes. (not relevant for any of ours)
