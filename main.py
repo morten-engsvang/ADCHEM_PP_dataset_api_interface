@@ -12,6 +12,7 @@ import meteorology_download
 import CLIMATE_DATA_STORE_API
 import COPERNICUS_MARINE_SERVICE_API
 import GFED_download
+import HTAP_download
 ##############################################################
 
 
@@ -34,6 +35,7 @@ CLIMATE_DATA_STORE_DOWNLOAD = False
 ATMOSPHERE_DATA_STORE_DOWNLOAD = False
 COPERNICUS_MARINE_SERVICE_DOWNLOAD = False
 GFED_DOWNLOAD = False
+HTAP_DOWNLOAD = False
 
 ##############################################################
 
@@ -82,5 +84,7 @@ if COPERNICUS_MARINE_SERVICE_DOWNLOAD:
 
 if GFED_DOWNLOAD:
     GFED_download.GFED_download(years, input_data_location)
-    
+
+if HTAP_DOWNLOAD:
+    HTAP_download.download_all(input_data_location,years, month_array)
 #####################################################################
