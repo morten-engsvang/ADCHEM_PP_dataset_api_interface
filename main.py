@@ -10,6 +10,7 @@ import ATMOSPHERE_DATA_STORE_API
 import CAMS_API
 import meteorology_download
 import CLIMATE_DATA_STORE_API
+import COPERNICUS_MARINE_SERVICE_API
 ##############################################################
 
 
@@ -29,7 +30,8 @@ longitudes = [-180,180] #Negative: western hemisphere, positive: eastern hemisph
 MET_DOWNLOAD = False
 CAMS_DOWNLOAD = False
 CLIMATE_DATA_STORE_DOWNLOAD = False
-ATMOSPHERE_DATA_STORE_DOWNLOAD = True
+ATMOSPHERE_DATA_STORE_DOWNLOAD = False
+COPERNICUS_MARINE_SERVICE_DOWNLOAD = False
 
 ##############################################################
 
@@ -72,5 +74,8 @@ if CLIMATE_DATA_STORE_DOWNLOAD:
 
 if ATMOSPHERE_DATA_STORE_DOWNLOAD:
     ATMOSPHERE_DATA_STORE_API.download_all(input_data_location,years,month_array,latitudes,longitudes)
+
+if COPERNICUS_MARINE_SERVICE_DOWNLOAD:
+    COPERNICUS_MARINE_SERVICE_API.download_all(input_data_location,years,month_array,latitudes,longitudes)
 
 #####################################################################

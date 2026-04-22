@@ -3,4 +3,5 @@ requests
 pathlib
 playwright
 cdsapi
+h5py
 copernicusmarine

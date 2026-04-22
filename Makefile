@@ -15,12 +15,21 @@ setup_passwords:
 	@echo "----------------------------------"
 	@echo "------Start of password setup-----"
 	@echo "----------------------------------"
-	@echo "Please enter username and password for the eccad website"; \
+	@echo "Please enter username and password for the eccad website: https://eccad.aeris-data.fr/"; \
 	read -p "Username: " username; \
 	read -p "Password: " password; \
 	echo "#ECCAD login_information" >> settings.py; \
 	echo "ECCAD_USERNAME=\"$$username\"" >> settings.py; \
 	echo "ECCAD_PASSWORD=\"$$password\"" >> settings.py
+	@echo "Please enter username and password for the Copernicus Marine Service website: https://marine.copernicus.eu/"; \
+	read -p "Username: " username; \
+	read -p "Password: " password; \
+	echo "#Copernicus Marine Service login_information" >> settings.py; \
+	echo "CMS_USERNAME=\"$$username\"" >> settings.py; \
+	echo "CMS_PASSWORD=\"$$password\"" >> settings.py
+	@echo "----------------------------------"
+	@echo "-------End of password setup------"
+	@echo "----------------------------------"
 
 setup_api:
 	@echo "Creating API key for the Climate Data Store API"
